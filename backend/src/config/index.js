@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export default {
+  ENVIRONMENT: process.env.NODE_ENV || "dev",
   DB_NAME: process.env.DB_NAME || "notepad",
   DB_USER: process.env.DB_USER || "postgres",
   DB_PASSWORD: process.env.DB_PASSWORD || "Godgracefree1&",

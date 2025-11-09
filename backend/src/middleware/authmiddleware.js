@@ -12,8 +12,6 @@ async function authMiddleware(req, res, next) {
     }
 
     const token = auth.split(" ")[1];
-    console.log("Token received:", token);
-    console.log("JWT_SECRET exists:", !!process.env.JWT_SECRET);
 
     const payload = await utils.verifyToken(token);
     console.log("Token payload:", payload);

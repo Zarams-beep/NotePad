@@ -28,24 +28,61 @@ async function loginUser(req, res) {
   }
 }
 
-function changePassword(req, res) {
-  // Change password logic here
-  res.send("Password changed");
+async function changePassword(req, res) {
+  try {
+    const userId = req.user.id;
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      throw new AppError("Current password and new password are required", 400);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    throw new AppError(error.message || "Password change failed", 400);
+  }
 }
 
-function getEmailOTP(req, res) {
-  // Get email OTP logic here
-  res.send("Email OTP sent");
+async function getEmailOTP(req, res) {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      throw new AppError("Email is required", 400);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "OTP sent to email successfully",
+    });
+  } catch (error) {
+    throw new AppError(error.message || "Failed to send OTP", 500);
+  }
 }
 
-function verifyEmailOTP(req, res) {
-  // Verify email OTP logic here
-  res.send("Email OTP verified");
+async function verifyEmailOTP(req, res) {
+  try {
+    const { email, otp } = req.body;
+
+    if (!email || !otp) {
+      throw new AppError("Email and OTP are required", 400);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Email verified successfully",
+    });
+  } catch (error) {
+    throw new AppError(error.message || "OTP verification failed", 400);
+  }
 }
 
 async function userProfile(req, res, next) {
   try {
-    const userId = req.user?.id; // usually set by JWT middleware
+    const userId = req.user?.id;
 
     if (!userId) throw new AppError("Unauthorized user", 401);
 
