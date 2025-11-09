@@ -2,6 +2,9 @@
 
 A full-featured note-taking REST API built with Node.js, Express, PostgreSQL, and Redis.
 
+## PostMan Link
+https://chizaramchukwumaobi1-5300277.postman.co/workspace/Chizaram's-Workspace~97cf232f-8bd4-44da-8000-860c139d7a78/collection/47423700-15fd898d-c330-4b03-b60e-1fe3b5b86247?action=share&creator=47423700&active-environment=47423700-e67b4233-986a-43eb-8f65-6c550fada380
+
 ## Features
 
 - User Authentication (JWT)
