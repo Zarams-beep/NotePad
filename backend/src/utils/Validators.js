@@ -42,3 +42,38 @@ export const loginValidator = z.object({
     required_error: "Invalid Email or Password",
   }),
 });
+
+// Change Password Validator
+export const changePasswordValidator = z.object({
+  currentPassword: z.string({
+    required_error: "Current password is required",
+  }),
+  newPassword: z
+    .string({
+      required_error: "New password is required",
+    })
+    .min(6, "New password must be at least 6 characters long"),
+});
+
+// OTP Request Validator
+export const otpRequestValidator = z.object({
+  email: z
+    .string({
+      required_error: "Email is required",
+    })
+    .email("Invalid email format"),
+});
+
+// OTP Verify Validator
+export const otpVerifyValidator = z.object({
+  email: z
+    .string({
+      required_error: "Email is required",
+    })
+    .email("Invalid email format"),
+  otp: z
+    .string({
+      required_error: "OTP is required",
+    })
+    .length(6, "OTP must be 6 digits"),
+});

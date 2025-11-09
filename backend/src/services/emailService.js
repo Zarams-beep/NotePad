@@ -31,7 +31,7 @@ export async function renderTemplate(templateName, payload = {}) {
 
 export async function sendEmail(to, subject, html, text) {
   const message = {
-    from: `Health sure website  <${config.SMTP_USER}>`,
+    from: `Note Pad website  <${config.SMTP_USER}>`,
     to,
     subject,
     text,
