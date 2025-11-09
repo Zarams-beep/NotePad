@@ -5,7 +5,7 @@ import path from "path";
 
 // Get user profile (with caching)
 export async function getUserProfile(user_uuid) {
-  // 1️⃣ Try to get from cache
+  // Try to get from cache
   if (cache && cache.redis) {
     const cachedProfile = await cache.get(`userProfile:${user_uuid}`);
     if (cachedProfile) {
@@ -13,20 +13,20 @@ export async function getUserProfile(user_uuid) {
     }
   }
 
-  // 2️⃣ If not cached, fetch from DB
+  // If not cached, fetch from DB
   const user = await User.findOne({
     where: { id: user_uuid },
   });
 
   if (!user) throw new Error("User not found");
 
-  // 3️⃣ Remove password from data
+  // Remove password from data
   const userData = { ...user.dataValues };
   delete userData.password;
 
-  // 4️⃣ Store in cache for next time
+  // Store in cache for next time
   if (cache && cache.redis) {
-    await cache.set(`userProfile:${user_uuid}`, JSON.stringify(userData), 3600); 
+    await cache.set(`userProfile:${user_uuid}`, JSON.stringify(userData), 3600);
   }
 
   return userData;
@@ -36,7 +36,7 @@ export async function updateUserProfile(user_uuid, requestData) {
   let tempFilePath = null;
 
   try {
-    // ✅ Find user by UUID or ID
+    // Find user by UUID or ID
     const user = await User.findOne({ where: { id: user_uuid } });
     if (!user) throw new Error("User not found");
 
@@ -46,7 +46,7 @@ export async function updateUserProfile(user_uuid, requestData) {
     if (requestData.username) updateData.username = requestData.username;
     if (requestData.email) updateData.email = requestData.email;
 
-    // ✅ Handle file upload
+    // Handle file upload
     if (requestData.file) {
       tempFilePath = requestData.file.path;
 
@@ -55,7 +55,9 @@ export async function updateUserProfile(user_uuid, requestData) {
       await fs.mkdir(avatarsDir, { recursive: true });
 
       // Create a unique filename
-      const filename = `${user_uuid}-${Date.now()}${path.extname(requestData.file.originalname)}`;
+      const filename = `${user_uuid}-${Date.now()}${path.extname(
+        requestData.file.originalname
+      )}`;
       const permanentPath = path.join(avatarsDir, filename);
 
       // Move temp file → permanent folder
@@ -64,15 +66,17 @@ export async function updateUserProfile(user_uuid, requestData) {
 
       // If user already has an image, delete the old one
       if (user.image) {
-        await fs.unlink(user.image).catch((err) =>
-          console.error("Error deleting old profile picture:", err)
-        );
+        await fs
+          .unlink(user.image)
+          .catch((err) =>
+            console.error("Error deleting old profile picture:", err)
+          );
       }
 
       updateData.image = permanentPath;
     }
 
-    // ✅ Apply all updates
+    // Apply all updates
     await user.update(updateData);
     await user.reload();
 
@@ -80,7 +84,7 @@ export async function updateUserProfile(user_uuid, requestData) {
     const userResponse = user.toJSON();
     delete userResponse.password;
 
-    // ✅ Update cache if available
+    // Update cache if available
     if (cache && cache.redis) {
       const cacheKey = `userProfile:${user_uuid}`;
       await cache.del(cacheKey);
@@ -91,9 +95,9 @@ export async function updateUserProfile(user_uuid, requestData) {
   } catch (error) {
     // Delete temp file if something went wrong
     if (tempFilePath) {
-      await fs.unlink(tempFilePath).catch((err) =>
-        console.error("Error deleting temp file:", err)
-      );
+      await fs
+        .unlink(tempFilePath)
+        .catch((err) => console.error("Error deleting temp file:", err));
     }
 
     console.error("Error updating user profile:", error);

@@ -7,14 +7,14 @@ export async function updateUserNote(user_uuid, note_id, requestData) {
     throw new Error("User ID and Note ID are required");
   }
 
-  // ✅ Find note owned by this user
+  // Find note owned by this user
   const note = await NoteData.findOne({
     where: { user_uuid, note_id },
   });
 
   if (!note) throw new Error("Note not found or does not belong to user");
 
-  // ✅ Update allowed fields only
+  // Update allowed fields only
   const allowedFields = ["title", "content", "color", "pinned"];
   for (const key of Object.keys(requestData)) {
     if (allowedFields.includes(key)) {
@@ -22,10 +22,10 @@ export async function updateUserNote(user_uuid, note_id, requestData) {
     }
   }
 
-  // ✅ Save updates
+  // Save updates
   await note.save();
 
-  // ✅ Clear cached notes so next fetch is fresh
+  // Clear cached notes so next fetch is fresh
   if (cache && cache.redis) {
     await cache.del(`noteUser:${user_uuid}`);
   }

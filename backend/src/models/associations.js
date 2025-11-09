@@ -29,5 +29,4 @@ Note.hasMany(SharedNote, {
   as: "sharedWith",
 });
 
-
-export { User, Note, SharedNote};
+export { User, Note, SharedNote };

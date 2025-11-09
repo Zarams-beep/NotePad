@@ -31,7 +31,7 @@ const zodValidationMiddleware = (schema) => (req, res, next) => {
     return res.status(500).json({
       success: false,
       message: "Internal server error during validation",
-       error: error.message,
+      error: error.message,
     });
   }
 };

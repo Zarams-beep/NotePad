@@ -16,10 +16,13 @@ export const noteValidator = z.object({
 
   color: z
     .string()
-    .regex(/^#(?:[0-9a-fA-F]{3}){1,2}$/, "Invalid color format (use HEX, e.g. #FF5733)")
-    .or(z.literal("").optional()), 
+    .regex(
+      /^#(?:[0-9a-fA-F]{3}){1,2}$/,
+      "Invalid color format (use HEX, e.g. #FF5733)"
+    )
+    .or(z.literal("").optional()),
 
   pinned: z.boolean().optional(),
   archived: z.boolean().optional(),
-user_uuid: z.string().uuid("Invalid UUID format").optional(),
+  user_uuid: z.string().uuid("Invalid UUID format").optional(),
 });

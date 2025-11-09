@@ -13,7 +13,6 @@ export async function getUserNotes(user_uuid) {
     }
   }
 
-
   // Fetch notes from database
   const notes = await NoteData.findAll({
     where: { user_uuid },
@@ -22,7 +21,6 @@ export async function getUserNotes(user_uuid) {
       ["updatedAt", "DESC"],
     ],
   });
-
 
   // If no notes exist, return empty array (not error)
   if (!notes || notes.length === 0) {

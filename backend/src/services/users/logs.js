@@ -38,12 +38,11 @@ export async function logUserOutOfApp(userId) {
   return { message: "User logged out successfully" };
 }
 
-
-async function sendLoginNotification(user){
-  const html = await renderTemplate("login-notification",{
+async function sendLoginNotification(user) {
+  const html = await renderTemplate("login-notification", {
     username: user.username,
     email: user.email,
-     loginTime: new Date().toLocaleString("en-US", {
+    loginTime: new Date().toLocaleString("en-US", {
       dateStyle: "full",
       timeStyle: "short",
     }),

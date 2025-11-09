@@ -26,9 +26,9 @@ const NoteData = sequelize.define(
       defaultValue: false,
     },
     archived: {
-  type: DataTypes.BOOLEAN,
-  defaultValue: false,
-},
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
 
     user_uuid: {
       type: DataTypes.UUID,

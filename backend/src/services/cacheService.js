@@ -6,8 +6,8 @@ redis.on("connect", () => {
 });
 
 redis.on("error", (error) => {
-//   console.error("Redis error:", error);
-//   console.log("Error connecting to Redis server");
+  //   console.error("Redis error:", error);
+  //   console.log("Error connecting to Redis server");
 });
 
 export default {

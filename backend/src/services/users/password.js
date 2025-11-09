@@ -4,27 +4,28 @@ import crypto from "node:crypto";
 import { sendEmail, renderTemplate } from "../emailService.js";
 import config from "../../config/index.js";
 
-export async function changePassword (userId, currentPassword, newPassword){
-  try{
+export async function changePassword(userId, currentPassword, newPassword) {
+  try {
     const user = await User.findOne({
-      where: {id: userId}
+      where: { id: userId },
     });
-    if (!user) throw new Error ("User not found");
+    if (!user) throw new Error("User not found");
 
     // Verify current password
     const isValidPassword = await user.verifyPassword(currentPassword);
     if (!isValidPassword) {
       throw new Error("Current password is incorrect");
     }
-     // Validate new password
+    // Validate new password
     if (newPassword.length < 8) {
-      throw new Error("New password must be at least 8 characters long");}
+      throw new Error("New password must be at least 8 characters long");
+    }
 
-       if (currentPassword === newPassword) {
+    if (currentPassword === newPassword) {
       throw new Error("New password must be different from current password");
     }
 
-        // Update password (will be hashed by beforeUpdate hook)
+    // Update password (will be hashed by beforeUpdate hook)
     await user.update({ password: newPassword });
 
     // Send notification email
@@ -36,8 +37,7 @@ export async function changePassword (userId, currentPassword, newPassword){
       await cache.del(`userSessions:${userId}`);
     }
     return { success: true, message: "Password changed successfully" };
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error changing password:", error);
     throw error;
   }
@@ -46,7 +46,7 @@ export async function changePassword (userId, currentPassword, newPassword){
 export async function requestPasswordReset(email) {
   try {
     const user = await User.findOne({
-      where:{email:email.toLowerCase()}
+      where: { email: email.toLowerCase() },
     });
 
     // Don't reveal if user exists for security
@@ -58,7 +58,7 @@ export async function requestPasswordReset(email) {
     }
 
     //Generate reset token
-     const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetToken = crypto.randomBytes(32).toString("hex");
     const resetTokenExpiry = Date.now() + 3600000; // 1 hour
 
     // Store token in cache (or you could add fields to User model)
@@ -68,12 +68,12 @@ export async function requestPasswordReset(email) {
         JSON.stringify({ userId: user.user_uuid, email: user.email }),
         resetTokenExpiry // 1 hour TTL
       );
-    }    
+    }
 
     // Send reset email
     await sendPasswordResetEmail(user, resetToken);
-  
-     return {
+
+    return {
       success: true,
       message: "If an account exists, a reset link has been sent",
     };
@@ -82,7 +82,6 @@ export async function requestPasswordReset(email) {
     throw new Error("Unable to process password reset request");
   }
 }
-
 
 export async function resetPassword(token, newPassword) {
   try {
@@ -128,22 +127,21 @@ export async function resetPassword(token, newPassword) {
   }
 }
 
-
-
 async function sendPasswordChangeNotification(user) {
   const html = await renderTemplate("password-changed", {
     username: user.username,
     email: user.email,
-     date: new Date().toLocaleString(),});
+    date: new Date().toLocaleString(),
+  });
 
-     const text = `Hello ${
+  const text = `Hello ${
     user.username
   },\n\nYour password was changed successfully on ${new Date().toLocaleString()}.\n\nIf you did not make this change, please contact support immediately.`;
 
   await sendEmail(user.email, "Password Changed Successfully", html, text);
-  }
+}
 
-  async function sendPasswordResetEmail(user, token) {
+async function sendPasswordResetEmail(user, token) {
   const resetUrl = `${config.TOTAL_URL}/reset-password?token=${token}`;
 
   const html = await renderTemplate("password-reset", {

@@ -1,6 +1,5 @@
 import User from "../../models/Users.js";
 
-
 // Create a new user
 export async function createUser(userData) {
   // Check if email exists

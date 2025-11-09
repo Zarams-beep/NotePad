@@ -3,21 +3,18 @@ import { createUser } from "../services/users/createNoteUser.js";
 import { logUserIntoApp } from "../services/users/logs.js";
 import { getUserProfile } from "../services/users/profile.js";
 
-async function registerUser (req,res){
-    try{
-        const{
-            username,
-            email, 
-            password,    
-        } = req.body;
-        await createUser ({
-            username,email,password,
-        });
-        res.status(201).json({success:true, message:"User registered"});
-    }
-    catch(error){
-        throw new AppError(error || "Registration failed", 400)
-    }
+async function registerUser(req, res) {
+  try {
+    const { username, email, password } = req.body;
+    await createUser({
+      username,
+      email,
+      password,
+    });
+    res.status(201).json({ success: true, message: "User registered" });
+  } catch (error) {
+    throw new AppError(error || "Registration failed", 400);
+  }
 }
 
 async function loginUser(req, res) {
@@ -46,7 +43,7 @@ function verifyEmailOTP(req, res) {
   res.send("Email OTP verified");
 }
 
- async function userProfile(req, res, next) {
+async function userProfile(req, res, next) {
   try {
     const userId = req.user?.id; // usually set by JWT middleware
 
@@ -63,7 +60,7 @@ function verifyEmailOTP(req, res) {
   }
 }
 
- async function logoutUser(req, res, next) {
+async function logoutUser(req, res, next) {
   try {
     const userId = req.user?.id;
 
@@ -78,4 +75,11 @@ function verifyEmailOTP(req, res) {
   }
 }
 
-export { registerUser, loginUser, changePassword, getEmailOTP, verifyEmailOTP, userProfile };
+export {
+  registerUser,
+  loginUser,
+  changePassword,
+  getEmailOTP,
+  verifyEmailOTP,
+  userProfile,
+};

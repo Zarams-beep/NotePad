@@ -3,29 +3,30 @@
 import NoteData from "../../models/Note.js";
 
 //create note
-export async function createNote (noteData){
+export async function createNote(noteData) {
+  const noteTitle = noteData.title;
+  const noteContent = noteData.content;
+  //validate required fields
+  if (!noteTitle || !noteContent) {
+    throw new Error("Title and content are required");
+  }
 
-    const noteTitle = noteData.title
-    const noteContent = noteData.content
-    //validate required fields
-    if (!noteTitle || !noteContent){
-        throw new Error ("Title and content are required")
-    }
+  //limit title length
+  if (noteTitle.length > 100) {
+    throw new Error("Title is too long");
+  }
 
-    //limit title length
-    if (noteTitle.length > 100){
-        throw new Error ("Title is too long")
-    }
-
-    //no empty cells
-    if (!noteTitle.trim() || !noteContent.trim()) {
+  //no empty cells
+  if (!noteTitle.trim() || !noteContent.trim()) {
     throw new Error("Title and content cannot be empty");
-    }
+  }
 
-    //check for existing title
-    const existingNote = await NoteData.findOne({where:{title:noteTitle, user_uuid: noteData.user_uuid,} })
+  //check for existing title
+  const existingNote = await NoteData.findOne({
+    where: { title: noteTitle, user_uuid: noteData.user_uuid },
+  });
 
-     if (existingNote) {
+  if (existingNote) {
     throw new Error("Note title already exists for this user");
   }
 
@@ -38,5 +39,4 @@ export async function createNote (noteData){
   });
 
   return newNote;
-
 }
