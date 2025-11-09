@@ -37,7 +37,7 @@ Before running this project, ensure you have:
 
 1. **Clone the repository**
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Zarams-beep/NotePad
 cd NotePad/backend
 ```
 
@@ -57,7 +57,7 @@ NODE_ENV=development
 # Database
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=notepad_db
+DB_NAME=postgres
 DB_USER=postgres
 DB_PASSWORD=your_password
 
@@ -516,12 +516,12 @@ Make sure all required environment variables are set in `.env` file before runni
 
 ## Security Features
 
-- ✅ JWT-based authentication
-- ✅ Password hashing with bcrypt
-- ✅ Input validation with Zod
-- ✅ SQL injection protection (Sequelize ORM)
-- ✅ CORS configured
-- ✅ Environment variables for sensitive data
+- JWT-based authentication
+- Password hashing with bcrypt
+- Input validation with Zod
+- SQL injection protection (Sequelize ORM)
+- CORS configured
+- Environment variables for sensitive data
 
 ---
 
@@ -538,13 +538,16 @@ Make sure all required environment variables are set in `.env` file before runni
 
 ## License
 
-MIT
+Chizaram
 
 ---
 
 ## Author
 
-Your Name
+Chizaram Divine Chukwumaobi
+
+## Description
+Chizaram Divine Chukwumaobi Standalone Project for Tech Crush
 
 ---
 
