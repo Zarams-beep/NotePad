@@ -84,7 +84,7 @@ TOTAL_URL=http://localhost:5000
 psql -U postgres
 
 # Create database
-CREATE DATABASE notepad_db;
+CREATE DATABASE postgres;
 
 # Exit
 \q
